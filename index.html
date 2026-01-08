@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Photo Booth</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#6c63ff;
+  --primary-dark:#4f46e5;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --radius:18px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+body{background:var(--bg);color:var(--text);overflow-x:hidden}
+
+header{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;
+  padding:80px 20px 100px;
+  text-align:center;
+}
+header h1{font-size:2.5rem}
+header p{opacity:.9}
+
+.container{
+  max-width:1100px;
+  margin:-70px auto 60px;
+  padding:20px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:30px;
+  box-shadow:0 25px 50px rgba(0,0,0,.08);
+  margin-bottom:32px;
+  opacity:0;
+  transform:translateY(30px);
+  transition:all .7s cubic-bezier(.22,1,.36,1);
+}
+
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+h2{margin-bottom:20px}
+
+.choices{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px
+}
+
+.choice{
+  border:2px solid #eef0f6;
+  border-radius:var(--radius);
+  padding:26px;
+  text-align:center;
+  background:#fafbff;
+  transition:all .5s cubic-bezier(.22,1,.36,1);
+}
+
+.choice:hover{
+  border-color:var(--primary);
+  transform:translateY(-10px) scale(1.02);
+}
+
+.choice.locked{
+  pointer-events:none;
+  opacity:.4;
+}
+
+.btn{
+  padding:13px 28px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
+  transition:all .35s ease;
+}
+
+.btn:hover{
+  background:var(--primary-dark);
+  transform:scale(1.05);
+}
+
+form{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px
+}
+
+input,textarea{
+  padding:14px;
+  border-radius:14px;
+  border:1.5px solid #e5e7eb;
+  width:100%;
+}
+
+textarea{min-height:110px}
+.full{grid-column:1/-1}
+
+footer{text-align:center;color:var(--muted);padding:30px}
+
+/* ===== MODAL ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .45s ease;
+  z-index:999;
+}
+
+.modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal-content{
+  background:#fff;
+  border-radius:22px;
+  padding:30px;
+  max-width:560px;
+  transform:scale(.92) translateY(20px);
+  opacity:0;
+  transition:all .55s cubic-bezier(.22,1,.36,1);
+}
+
+.modal.show .modal-content{
+  transform:scale(1) translateY(0);
+  opacity:1;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Booking Photo Booth</h1>
+  <p>Pilih layanan terbaik untuk event Anda</p>
+</header>
+
+<div class="container">
+
+  <div class="card" id="choiceSection">
+    <h2>Pilih Jenis Booking</h2>
+    <div class="choices">
+      <div class="choice locked">
+        <h3>Kerja Sama Photo Booth</h3>
+        <p>Kolaborasi & partnership</p>
+        <button class="btn">Pilih</button>
+      </div>
+
+      <div class="choice locked">
+        <h3>Sewa Photo Booth</h3>
+        <p>Wedding & event</p>
+        <button class="btn">Pilih</button>
+      </div>
+
+      <div class="choice locked">
+        <h3>Purchase Photo Booth</h3>
+        <p>Pembelian unit</p>
+        <button class="btn">Pilih</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="formSection">
+    <h2>Detail Booking</h2>
+    <form onsubmit="sendWA(event)">
+      <input id="bookingType" class="full" readonly>
+      <input id="name" placeholder="Nama Lengkap" required>
+      <input id="phone" placeholder="Nomor WhatsApp" required>
+      <input id="date" type="date" required>
+      <textarea id="address" class="full" placeholder="Alamat / Lokasi" required></textarea>
+      <textarea id="note" class="full" placeholder="Catatan tambahan"></textarea>
+      <div class="full">
+        <button class="btn">Kirim via WhatsApp</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<footer>© 2026 Photo Booth Booking</footer>
+
+<!-- MODAL TATACARA -->
+<div class="modal" id="guideModal">
+  <div class="modal-content">
+    <h3>Tata Cara Booking</h3>
+    <p style="margin:15px 0;line-height:1.6;color:#555">
+      1. Pilih salah satu layanan: Kerja Sama, Sewa, atau Purchase Photo Booth.<br><br>
+      2. Isi data lengkap (nama, alamat, tanggal).  
+      Tanggal adalah waktu tim kami datang, disarankan <b>H-1</b> sebelum acara / kerja sama / purchase.<br><br>
+      3. Permintaan desain frame photo booth dapat ditulis di kolom <b>Catatan Tambahan</b>.
+    </p>
+    <div style="text-align:center">
+      <button class="btn" onclick="closeGuide()">Oke, Mengerti</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SERVICE -->
+<div class="modal" id="serviceModal">
+  <div class="modal-content">
+    <h3 id="serviceTitle"></h3>
+    <p id="serviceDesc" style="white-space:pre-line;color:#555;margin:16px 0"></p>
+    <div style="text-align:center">
+      <button class="btn" onclick="closeService()">Oke</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const guideModal = document.getElementById("guideModal");
+const serviceModal = document.getElementById("serviceModal");
+const serviceTitle = document.getElementById("serviceTitle");
+const serviceDesc = document.getElementById("serviceDesc");
+
+const choices = document.querySelectorAll(".choice");
+const formSection = document.getElementById("formSection");
+
+const desc = {
+  "Kerja Sama Photo Booth":
+  "Kerja Sama Photo Booth Skema kerjanya sama dengan individu, brand, event organizer, maupun partner bisnis untuk menghadirkan layanan photo booth dalam berbagai bentuk kolaborasi. Kerja sama dapat berupa project-based, event-based, maupun kerja sama jangka panjang sesuai kebutuhan dan konsep acara.",
+
+  "Sewa Photo Booth":
+  "Sewa Photo Booth adalah layanan penyewaan photo booth untuk berbagai acara, di mana tamu dapat berfoto secara mandiri atau dibantu oleh crew, dengan hasil foto yang langsung dicetak (instant print) maupun dikirim dalam bentuk digital. Layanan ini dirancang untuk menambah pengalaman interaktif dan hiburan dalam sebuah acara, sekaligus menjadi media untuk mengabadikan momen kebersamaan dengan cara yang kreatif dan menyenangkan..",
+
+  "Purchase Photo Booth":
+  "Layanan penjualan unit photo booth yang dirancang khusus untuk mendukung kebutuhan bisnis dan operasional berbagai skala usaha. Setiap unit dikembangkan dengan mempertimbangkan aspek fungsionalitas, kemudahan penggunaan, serta tampilan yang menarik. secara visual. Spesifikasi unit dapat disesuaikan sesuai kebutuhan, mulai dari desain booth, jenis kamera, sistem pencahayaan, perangkat lunak, hingga opsi branding dan fitur pendukung lainnya, sehingga siap digunakan untuk berbagai keperluan seperti event, promosi, aktivasi merek, maupun operasional jangka panjang."
+};
+
+let selected = "";
+
+/* ===== LOAD ===== */
+window.onload = () => {
+  guideModal.classList.add("show");
+  setTimeout(()=>document.getElementById("choiceSection").classList.add("show"),200);
+};
+
+/* ===== CLOSE GUIDE ===== */
+function closeGuide(){
+  guideModal.classList.remove("show");
+  choices.forEach((c,i)=>{
+    c.classList.remove("locked");
+    c.querySelector("button").onclick = () =>
+      openService(Object.keys(desc)[i]);
+  });
+}
+
+/* ===== SERVICE MODAL ===== */
+function openService(type){
+  selected = type;
+  serviceTitle.innerText = type;
+  serviceDesc.innerText = desc[type];
+  serviceModal.classList.add("show");
+}
+
+function closeService(){
+  serviceModal.classList.remove("show");
+  formSection.classList.add("show");
+  bookingType.value = selected;
+  formSection.scrollIntoView({behavior:"smooth"});
+}
+
+/* ===== WA ===== */
+function sendWA(e){
+  e.preventDefault();
+  const msg = `Halo, saya ingin booking Photo Booth
+
+Jenis: ${bookingType.value}
+Nama: ${name.value}
+No WA: ${phone.value}
+Tanggal: ${date.value}
+Alamat: ${address.value}
+Catatan: ${note.value}`;
+
+  window.open(
+    "https://wa.me/6282125072106?text="+encodeURIComponent(msg),
+    "_blank"
+  );
+}
+</script>
+
+</body>
+</html>
