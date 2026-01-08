@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Booking Photo Booth</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -22,17 +21,17 @@
 body{background:var(--bg);color:var(--text);overflow-x:hidden}
 
 header{
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1650&q=80') center/cover no-repeat;
   color:#fff;
-  padding:80px 20px 100px;
+  padding:100px 20px 140px;
   text-align:center;
 }
-header h1{font-size:2.5rem}
-header p{opacity:.9}
+header h1{font-size:3rem; margin-bottom:10px;}
+header p{opacity:.9; font-size:1.1rem}
 
 .container{
   max-width:1100px;
-  margin:-70px auto 60px;
+  margin:-80px auto 60px;
   padding:20px;
 }
 
@@ -52,12 +51,12 @@ header p{opacity:.9}
   transform:translateY(0);
 }
 
-h2{margin-bottom:20px}
+h2{margin-bottom:24px; color:var(--primary)}
 
 .choices{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:24px
+  gap:24px;
 }
 
 .choice{
@@ -67,28 +66,31 @@ h2{margin-bottom:20px}
   text-align:center;
   background:#fafbff;
   transition:all .5s cubic-bezier(.22,1,.36,1);
+  cursor:pointer;
 }
-
+.choice img{
+  width:80px;
+  margin-bottom:16px;
+}
 .choice:hover{
   border-color:var(--primary);
-  transform:translateY(-10px) scale(1.02);
+  transform:translateY(-10px) scale(1.03);
 }
-
 .choice.locked{
   pointer-events:none;
   opacity:.4;
 }
 
 .btn{
-  padding:13px 28px;
+  padding:14px 30px;
   border-radius:999px;
   border:none;
   cursor:pointer;
   background:var(--primary);
   color:#fff;
+  font-weight:500;
   transition:all .35s ease;
 }
-
 .btn:hover{
   background:var(--primary-dark);
   transform:scale(1.05);
@@ -99,18 +101,22 @@ form{
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:16px
 }
-
 input,textarea{
   padding:14px;
   border-radius:14px;
   border:1.5px solid #e5e7eb;
   width:100%;
+  transition:all .3s;
 }
-
+input:focus,textarea:focus{
+  border-color:var(--primary);
+  outline:none;
+  box-shadow:0 0 10px rgba(108,99,255,0.2);
+}
 textarea{min-height:110px}
 .full{grid-column:1/-1}
 
-footer{text-align:center;color:var(--muted);padding:30px}
+footer{text-align:center;color:var(--muted);padding:30px;font-size:0.95rem}
 
 /* ===== MODAL ===== */
 .modal{
@@ -145,6 +151,11 @@ footer{text-align:center;color:var(--muted);padding:30px}
   transform:scale(1) translateY(0);
   opacity:1;
 }
+
+@media(max-width:600px){
+  header h1{font-size:2rem}
+  header p{font-size:1rem}
+}
 </style>
 </head>
 
@@ -161,18 +172,21 @@ footer{text-align:center;color:var(--muted);padding:30px}
     <h2>Pilih Jenis Booking</h2>
     <div class="choices">
       <div class="choice locked">
+        <img src="https://img.icons8.com/color/96/000000/handshake.png" alt="Kerja Sama">
         <h3>Kerja Sama Photo Booth</h3>
         <p>Kolaborasi & partnership</p>
         <button class="btn">Pilih</button>
       </div>
 
       <div class="choice locked">
+        <img src="https://img.icons8.com/color/96/000000/camera.png" alt="Sewa">
         <h3>Sewa Photo Booth</h3>
         <p>Wedding & event</p>
         <button class="btn">Pilih</button>
       </div>
 
       <div class="choice locked">
+        <img src="https://img.icons8.com/color/96/000000/shopping-cart.png" alt="Purchase">
         <h3>Purchase Photo Booth</h3>
         <p>Pembelian unit</p>
         <button class="btn">Pilih</button>
@@ -206,7 +220,7 @@ footer{text-align:center;color:var(--muted);padding:30px}
     <p style="margin:15px 0;line-height:1.6;color:#555">
       1. Pilih salah satu layanan: Kerja Sama, Sewa, atau Purchase Photo Booth.<br><br>
       2. Isi data lengkap (nama, alamat, tanggal).  
-      Tanggal adalah waktu tim kami datang, disarankan <b>H-1</b> sebelum acara / kerja sama / purchase.<br><br>
+      Tanggal adalah waktu tim kami datang, disarankan <b>H-1</b> sebelum acara.<br><br>
       3. Permintaan desain frame photo booth dapat ditulis di kolom <b>Catatan Tambahan</b>.
     </p>
     <div style="text-align:center">
@@ -240,10 +254,10 @@ const desc = {
   "Kerja Sama Photo Booth Skema kerjanya sama dengan individu, brand, event organizer, maupun partner bisnis untuk menghadirkan layanan photo booth dalam berbagai bentuk kolaborasi. Kerja sama dapat berupa project-based, event-based, maupun kerja sama jangka panjang sesuai kebutuhan dan konsep acara.",
 
   "Sewa Photo Booth":
-  "Sewa Photo Booth adalah layanan penyewaan photo booth untuk berbagai acara, di mana tamu dapat berfoto secara mandiri atau dibantu oleh crew, dengan hasil foto yang langsung dicetak (instant print) maupun dikirim dalam bentuk digital. Layanan ini dirancang untuk menambah pengalaman interaktif dan hiburan dalam sebuah acara, sekaligus menjadi media untuk mengabadikan momen kebersamaan dengan cara yang kreatif dan menyenangkan..",
+  "Sewa Photo Booth adalah layanan penyewaan photo booth untuk berbagai acara, di mana tamu dapat berfoto secara mandiri atau dibantu oleh crew, dengan hasil foto yang langsung dicetak maupun dikirim dalam bentuk digital. Layanan ini dirancang untuk menambah pengalaman interaktif dan hiburan dalam acara, sekaligus menjadi media untuk mengabadikan momen kebersamaan secara kreatif.",
 
   "Purchase Photo Booth":
-  "Layanan penjualan unit photo booth yang dirancang khusus untuk mendukung kebutuhan bisnis dan operasional berbagai skala usaha. Setiap unit dikembangkan dengan mempertimbangkan aspek fungsionalitas, kemudahan penggunaan, serta tampilan yang menarik. secara visual. Spesifikasi unit dapat disesuaikan sesuai kebutuhan, mulai dari desain booth, jenis kamera, sistem pencahayaan, perangkat lunak, hingga opsi branding dan fitur pendukung lainnya, sehingga siap digunakan untuk berbagai keperluan seperti event, promosi, aktivasi merek, maupun operasional jangka panjang."
+  "Layanan penjualan unit photo booth yang dirancang khusus untuk mendukung kebutuhan bisnis dan operasional berbagai skala usaha. Setiap unit dikembangkan dengan mempertimbangkan aspek fungsionalitas, kemudahan penggunaan, serta tampilan menarik. Spesifikasi unit dapat disesuaikan sesuai kebutuhan, mulai dari desain booth, jenis kamera, sistem pencahayaan, perangkat lunak, hingga branding dan fitur pendukung lainnya."
 };
 
 let selected = "";
@@ -259,7 +273,7 @@ function closeGuide(){
   guideModal.classList.remove("show");
   choices.forEach((c,i)=>{
     c.classList.remove("locked");
-    c.querySelector("button").onclick = () =>
+    c.onclick = () =>
       openService(Object.keys(desc)[i]);
   });
 }
@@ -275,7 +289,7 @@ function openService(type){
 function closeService(){
   serviceModal.classList.remove("show");
   formSection.classList.add("show");
-  bookingType.value = selected;
+  document.getElementById("bookingType").value = selected;
   formSection.scrollIntoView({behavior:"smooth"});
 }
 
@@ -284,12 +298,12 @@ function sendWA(e){
   e.preventDefault();
   const msg = `Halo, saya ingin booking Photo Booth
 
-Jenis: ${bookingType.value}
-Nama: ${name.value}
-No WA: ${phone.value}
-Tanggal: ${date.value}
-Alamat: ${address.value}
-Catatan: ${note.value}`;
+Jenis: ${document.getElementById("bookingType").value}
+Nama: ${document.getElementById("name").value}
+No WA: ${document.getElementById("phone").value}
+Tanggal: ${document.getElementById("date").value}
+Alamat: ${document.getElementById("address").value}
+Catatan: ${document.getElementById("note").value}`;
 
   window.open(
     "https://wa.me/6282125072106?text="+encodeURIComponent(msg),
