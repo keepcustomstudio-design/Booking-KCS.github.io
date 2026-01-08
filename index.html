@@ -81,6 +81,14 @@ h2{margin-bottom:24px; color:var(--primary)}
   opacity:.4;
 }
 
+/* Highlight saat klik pilihan */
+.choice.selected {
+  border-color: var(--primary-dark);
+  box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
 .btn{
   padding:14px 30px;
   border-radius:999px;
@@ -156,6 +164,96 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:0.95rem}
   header h1{font-size:2rem}
   header p{font-size:1rem}
 }
+
+/* ===== SIDE MENU ===== */
+#menuToggle{
+  position:fixed;
+  top:20px;
+  right:20px;
+  width:35px;
+  height:28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  cursor:pointer;
+  z-index:1001;
+}
+#menuToggle .bar{
+  height:4px;
+  width:100%;
+  background:#fff; /* putih */
+  border-radius:4px;
+  transition:all 0.4s ease;
+}
+#sideMenu{
+  position:fixed;
+  top:0;
+  right:-40%;
+  width:40%;
+  height:100%;
+  background:var(--primary);
+  padding:40px 20px;
+  box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+  transition:right 0.5s ease;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+}
+#sideMenu ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+#sideMenu ul li a{
+  color:#fff;
+  font-size:1.1rem;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:all 0.3s ease;
+}
+#sideMenu ul li a:hover{
+  transform:translateX(-5px);
+  opacity:0.8;
+}
+/* overlay blur */
+#overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s ease;
+  z-index:999;
+  backdrop-filter:blur(0px);
+}
+/* MENU OPEN STATE */
+body.menu-open #sideMenu{
+  right:0;
+}
+body.menu-open #overlay{
+  opacity:1;
+  pointer-events:auto;
+  backdrop-filter:blur(4px);
+}
+body.menu-open #menuToggle .bar:nth-child(1){
+  transform:rotate(45deg) translate(7px,7px);
+}
+body.menu-open #menuToggle .bar:nth-child(2){
+  opacity:0;
+}
+body.menu-open #menuToggle .bar:nth-child(3){
+  transform:rotate(-45deg) translate(7px,-7px);
+}
+/* responsive */
+@media(max-width:600px){
+  #sideMenu{width:60%; right:-60%;}
+  body.menu-open #sideMenu{right:0;}
+}
 </style>
 </head>
 
@@ -220,7 +318,7 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:0.95rem}
     <p style="margin:15px 0;line-height:1.6;color:#555">
       1. Pilih salah satu layanan: Kerja Sama, Sewa, atau Purchase Photo Booth.<br><br>
       2. Isi data lengkap (nama, alamat, tanggal).  
-      Tanggal adalah waktu tim kami datang, disarankan <b>H-1</b> sebelum acara.<br><br>
+      Tanggal adalah waktu tim kami datang, disarankan <b>H-1</b> acara.<br><br>
       3. Permintaan desain frame photo booth dapat ditulis di kolom <b>Catatan Tambahan</b>.
     </p>
     <div style="text-align:center">
@@ -240,6 +338,25 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:0.95rem}
   </div>
 </div>
 
+<!-- ===== SIDE MENU ===== -->
+<div id="menuToggle">
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+</div>
+
+<div id="sideMenu">
+  <h3 style="color:#fff;margin-bottom:20px;text-align:center">Kontak Kami</h3>
+  <ul>
+    <li><a href="https://www.instagram.com/keepcustom.studio?igsh=MTFxZmQ4OGtjY2NnZg==" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png"/> Instagram</a></li>
+    <li><a href="https://www.tiktok.com/@keepcustom.studio" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png"/> TikTok</a></li>
+    <li><a href="https://wa.me/6282125072106" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/whatsapp.png"/> WhatsApp</a></li>
+    <li><a href="mailto:rj.officer44@gmail.com"><img src="https://img.icons8.com/ios-filled/24/ffffff/new-post.png"/> Email</a></li>
+  </ul>
+</div>
+
+<div id="overlay"></div>
+
 <script>
 const guideModal = document.getElementById("guideModal");
 const serviceModal = document.getElementById("serviceModal");
@@ -252,12 +369,16 @@ const formSection = document.getElementById("formSection");
 const desc = {
   "Kerja Sama Photo Booth":
   "Kerja Sama Photo Booth Skema kerjanya sama dengan individu, brand, event organizer, maupun partner bisnis untuk menghadirkan layanan photo booth dalam berbagai bentuk kolaborasi. Kerja sama dapat berupa project-based, event-based, maupun kerja sama jangka panjang sesuai kebutuhan dan konsep acara.",
-
   "Sewa Photo Booth":
   "Sewa Photo Booth adalah layanan penyewaan photo booth untuk berbagai acara, di mana tamu dapat berfoto secara mandiri atau dibantu oleh crew, dengan hasil foto yang langsung dicetak maupun dikirim dalam bentuk digital. Layanan ini dirancang untuk menambah pengalaman interaktif dan hiburan dalam acara, sekaligus menjadi media untuk mengabadikan momen kebersamaan secara kreatif.",
-
   "Purchase Photo Booth":
   "Layanan penjualan unit photo booth yang dirancang khusus untuk mendukung kebutuhan bisnis dan operasional berbagai skala usaha. Setiap unit dikembangkan dengan mempertimbangkan aspek fungsionalitas, kemudahan penggunaan, serta tampilan menarik. Spesifikasi unit dapat disesuaikan sesuai kebutuhan, mulai dari desain booth, jenis kamera, sistem pencahayaan, perangkat lunak, hingga branding dan fitur pendukung lainnya."
+};
+
+const templates = {
+  "Kerja Sama Photo Booth": "Halo, saya ingin melakukan kerja sama photo booth untuk event kami...",
+  "Sewa Photo Booth": "Halo, saya ingin menyewa photo booth pada tanggal berikut...",
+  "Purchase Photo Booth": "Halo, saya ingin membeli unit photo booth..."
 };
 
 let selected = "";
@@ -273,13 +394,16 @@ function closeGuide(){
   guideModal.classList.remove("show");
   choices.forEach((c,i)=>{
     c.classList.remove("locked");
-    c.onclick = () =>
-      openService(Object.keys(desc)[i]);
+    c.onclick = () => openService(Object.keys(desc)[i], c);
   });
 }
 
 /* ===== SERVICE MODAL ===== */
-function openService(type){
+function openService(type, choiceElement){
+  // Highlight pilihan sementara
+  choices.forEach(c=>c.classList.remove('selected'));
+  choiceElement.classList.add('selected');
+
   selected = type;
   serviceTitle.innerText = type;
   serviceDesc.innerText = desc[type];
@@ -291,25 +415,69 @@ function closeService(){
   formSection.classList.add("show");
   document.getElementById("bookingType").value = selected;
   formSection.scrollIntoView({behavior:"smooth"});
+
+  choices.forEach(c=>c.classList.remove('selected'));
 }
 
-/* ===== WA ===== */
+/* ===== VALIDATE FORM ===== */
+function validateForm(){
+  const phone = document.getElementById("phone").value.trim();
+  const date = document.getElementById("date").value;
+  const address = document.getElementById("address").value.trim();
+
+  let errors = [];
+
+  if(!/^08\d{7,}$/.test(phone)){
+    errors.push("Nomor WA tidak valid");
+  }
+
+  const today = new Date();
+  const minDate = new Date(today.getTime() + 24*60*60*1000); // H+1
+  if(new Date(date) < minDate){
+    errors.push("Tanggal minimal H-1");
+  }
+
+  if(address === ""){
+    errors.push("Alamat tidak boleh kosong");
+  }
+
+  return errors;
+}
+
+/* ===== SEND WA ===== */
 function sendWA(e){
   e.preventDefault();
-  const msg = `Halo, saya ingin booking Photo Booth
+  const errors = validateForm();
+  if(errors.length){
+    alert(errors.join("\n"));
+    return;
+  }
 
-Jenis: ${document.getElementById("bookingType").value}
+  const msg = `${templates[selected]}
 Nama: ${document.getElementById("name").value}
 No WA: ${document.getElementById("phone").value}
 Tanggal: ${document.getElementById("date").value}
 Alamat: ${document.getElementById("address").value}
-Catatan: ${document.getElementById("note").value}`;
+Catatan: ${document.getElementById("note").value}
+Link Lokasi: https://www.google.com/maps/search/${encodeURIComponent(document.getElementById("address").value)}
+`;
 
   window.open(
     "https://wa.me/6282125072106?text="+encodeURIComponent(msg),
     "_blank"
   );
 }
+
+/* ===== SIDE MENU TOGGLE ===== */
+const menuToggle = document.getElementById("menuToggle");
+const overlay = document.getElementById("overlay");
+
+menuToggle.addEventListener("click", ()=>{
+  document.body.classList.toggle("menu-open");
+});
+overlay.addEventListener("click", ()=>{
+  document.body.classList.remove("menu-open");
+});
 </script>
 
 </body>
