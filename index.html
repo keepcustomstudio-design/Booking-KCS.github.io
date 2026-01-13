@@ -8,29 +8,30 @@
 
 <style>
 :root{
-  --primary:#6c63ff;
-  --primary-dark:#4f46e5;
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
-  --radius:18px;
+  --primary: #c9a227;      /* Tombol utama */
+  --primary-dark: #b3911f; /* Tombol hover */
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --radius: 18px;
 }
+
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
 body{background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* HEADER */
 header{
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1650&q=80') center/cover no-repeat;
-  color:#fff;
-  padding:100px 20px 140px;
-  text-align:center;
+  background-color: #060c1b;
+  color: #ffffff;
+  padding: 100px 20px 140px;
+  text-align: center;
 }
-header h1{font-size:3rem; margin-bottom:10px;}
-header p{opacity:.9; font-size:1.1rem}
-.container{
-  max-width:1100px;
-  margin:-80px auto 60px;
-  padding:20px;
-}
+header h1{font-size:3rem;margin-bottom:10px;}
+header p{opacity:.9;font-size:1.1rem}
+
+/* CONTAINER & CARD */
+.container{max-width:1100px;margin:-80px auto 60px;padding:20px;}
 .card{
   background:var(--card);
   border-radius:var(--radius);
@@ -41,11 +42,10 @@ header p{opacity:.9; font-size:1.1rem}
   transform:translateY(30px);
   transition:all .7s cubic-bezier(.22,1,.36,1);
 }
-.card.show{
-  opacity:1;
-  transform:translateY(0);
-}
-h2{margin-bottom:24px; color:var(--primary)}
+.card.show{opacity:1; transform:translateY(0);}
+h2{margin-bottom:24px;color:var(--primary)}
+
+/* CHOICES */
 .choices{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -63,15 +63,50 @@ h2{margin-bottom:24px; color:var(--primary)}
 .choice img{width:80px;margin-bottom:16px;}
 .choice:hover{border-color:var(--primary); transform:translateY(-10px) scale(1.03);}
 .choice.locked{pointer-events:none; opacity:.4;}
-.choice.selected {border-color: var(--primary-dark); box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3); transform: scale(1.05); transition: all 0.3s ease;}
-.btn{padding:14px 30px;border-radius:999px;border:none;cursor:pointer;background:var(--primary);color:#fff;font-weight:500;transition:all .35s ease;}
-.btn:hover{background:var(--primary-dark);transform:scale(1.05);}
+.choice.selected{
+  border-color: var(--primary-dark);
+  box-shadow: 0 10px 25px rgba(201,162,39,0.3);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* BUTTON */
+.btn{
+  padding:14px 30px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#060c1b;
+  font-weight:500;
+  transition:all .35s ease;
+}
+.btn:hover{
+  background:var(--primary-dark);
+  transform:scale(1.05);
+}
+
+/* FORM */
 form{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-input,textarea{padding:14px;border-radius:14px;border:1.5px solid #e5e7eb;width:100%;transition:all .3s;}
-input:focus,textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 10px rgba(108,99,255,0.2);}
+input,textarea{
+  padding:14px;
+  border-radius:14px;
+  border:1.5px solid #e5e7eb;
+  width:100%;
+  transition:all .3s;
+}
+input:focus,textarea:focus{
+  border-color:var(--primary);
+  outline:none;
+  box-shadow:0 0 10px rgba(201,162,39,0.2);
+}
 textarea{min-height:110px}
 .full{grid-column:1/-1}
+
+/* FOOTER */
 footer{text-align:center;color:var(--muted);padding:30px;font-size:0.95rem}
+
+/* MODAL */
 .modal{
   position:fixed; inset:0; background:rgba(0,0,0,.55);
   display:flex; align-items:center; justify-content:center;
@@ -88,20 +123,38 @@ footer{text-align:center;color:var(--muted);padding:30px;font-size:0.95rem}
   transition:all .55s cubic-bezier(.22,1,.36,1);
 }
 .modal.show .modal-content{transform:scale(1) translateY(0); opacity:1;}
-@media(max-width:600px){header h1{font-size:2rem} header p{font-size:1rem}}
-#menuToggle{position:fixed;top:20px;right:20px;width:35px;height:28px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;z-index:1001;}
-#menuToggle .bar{height:4px;width:100%;background:#fff;border-radius:4px;transition:all 0.4s ease;}
-#sideMenu{position:fixed;top:0;right:-40%;width:40%;height:100%;background:var(--primary);padding:40px 20px;box-shadow:-5px 0 20px rgba(0,0,0,0.2);transition:right 0.5s ease;z-index:1000;display:flex;flex-direction:column;}
+
+/* SIDE MENU */
+#menuToggle{
+  position:fixed;top:20px;right:20px;width:35px;height:28px;
+  display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;z-index:1001;
+}
+#menuToggle .bar{
+  height:4px;width:100%;background:#fff;border-radius:4px;transition:all 0.4s ease;
+}
+#sideMenu{
+  position:fixed;top:0;right:-40%;width:40%;height:100%;
+  background:#060c1b; /* side menu gelap */
+  padding:40px 20px;
+  box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+  transition:right 0.5s ease;
+  z-index:1000;
+  display:flex;flex-direction:column;
+}
 #sideMenu ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:20px;}
 #sideMenu ul li a{color:#fff;font-size:1.1rem;text-decoration:none;display:flex;align-items:center;gap:10px;transition:all 0.3s ease;}
 #sideMenu ul li a:hover{transform:translateX(-5px);opacity:0.8;}
-#overlay{position:fixed; inset:0; background:rgba(0,0,0,0.4); opacity:0; pointer-events:none; transition:opacity 0.4s ease; z-index:999; backdrop-filter:blur(0px);}
+#overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,0.4);
+  opacity:0; pointer-events:none; transition:opacity 0.4s ease; z-index:999;
+  backdrop-filter:blur(0px);
+}
 body.menu-open #sideMenu{right:0;}
 body.menu-open #overlay{opacity:1; pointer-events:auto; backdrop-filter:blur(4px);}
 body.menu-open #menuToggle .bar:nth-child(1){transform:rotate(45deg) translate(7px,7px);}
 body.menu-open #menuToggle .bar:nth-child(2){opacity:0;}
 body.menu-open #menuToggle .bar:nth-child(3){transform:rotate(-45deg) translate(7px,-7px);}
-@media(max-width:600px){#sideMenu{width:60%; right:-60%;} body.menu-open #sideMenu{right:0;}}
+@media(max-width:600px){header h1{font-size:2rem} header p{font-size:1rem} #sideMenu{width:60%; right:-60%;} body.menu-open #sideMenu{right:0;}}
 </style>
 </head>
 <body>
@@ -201,7 +254,7 @@ body.menu-open #menuToggle .bar:nth-child(3){transform:rotate(-45deg) translate(
 <!-- EMAILJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-emailjs.init("MQD89op85tdexGu2w"); // ganti dengan User ID EmailJS
+emailjs.init("nt33R_dMSGyI9VlmG");
 </script>
 
 <script>
@@ -226,13 +279,11 @@ const templates = {
 
 let selected = "";
 
-/* ===== LOAD ===== */
 window.onload = () => {
   guideModal.classList.add("show");
   setTimeout(()=>document.getElementById("choiceSection").classList.add("show"),200);
 };
 
-/* ===== CLOSE GUIDE ===== */
 function closeGuide(){
   guideModal.classList.remove("show");
   choices.forEach((c,i)=>{
@@ -241,7 +292,6 @@ function closeGuide(){
   });
 }
 
-/* ===== SERVICE MODAL ===== */
 function openService(type, choiceElement){
   choices.forEach(c=>c.classList.remove('selected'));
   choiceElement.classList.add('selected');
@@ -259,7 +309,6 @@ function closeService(){
   choices.forEach(c=>c.classList.remove('selected'));
 }
 
-/* ===== VALIDATE FORM ===== */
 function validateForm(){
   const phone = document.getElementById("phone").value.trim();
   const date = document.getElementById("date").value;
@@ -273,7 +322,6 @@ function validateForm(){
   return errors;
 }
 
-/* ===== SEND WA ===== */
 function sendWA(e){
   e.preventDefault();
   const errors = validateForm();
@@ -289,45 +337,33 @@ Link Lokasi: https://www.google.com/maps/search/${encodeURIComponent(document.ge
   window.open("https://wa.me/6282125072106?text="+encodeURIComponent(msg), "_blank");
 }
 
-/* ===== SEND EMAIL ===== */
 document.getElementById("sendEmailBtn").addEventListener("click", function() {
   const errors = validateForm();
   if(errors.length){ alert(errors.join("\n")); return; }
 
   const templateParams = {
-  // versi umum (PALING SERING DIPAKAI TEMPLATE)
-  name: document.getElementById("name").value,
-  phone: document.getElementById("phone").value,
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    fromName: document.getElementById("name").value,
+    fromPhone: document.getElementById("phone").value,
+    from_name: document.getElementById("name").value,
+    from_phone: document.getElementById("phone").value,
+    booking_type: selected,
+    date: document.getElementById("date").value,
+    address: document.getElementById("address").value,
+    note: document.getElementById("note").value,
+    maps_link: "https://www.google.com/maps/search/" + encodeURIComponent(document.getElementById("address").value)
+  };
 
-  // versi camelCase
-  fromName: document.getElementById("name").value,
-  fromPhone: document.getElementById("phone").value,
-
-  // versi underscore
-  from_name: document.getElementById("name").value,
-  from_phone: document.getElementById("phone").value,
-
-  booking_type: selected,
-  date: document.getElementById("date").value,
-  address: document.getElementById("address").value,
-  note: document.getElementById("note").value,
-
-  maps_link:
-    "https://www.google.com/maps/search/" +
-    encodeURIComponent(document.getElementById("address").value)
-};
-
-
-  emailjs.send("service_t3scepc", "template_n2wnsxq", templateParams)
+  emailjs.send("service_afignlg", "template_zvvch8u", templateParams)
     .then(function(response){
-      alert("Email berhasil dikirim ke rj.officer44@gmail.com!");
+      alert("Email berhasil dikirim ✅");
     }, function(error){
-      alert("Gagal mengirim email, silahkan coba lagi.");
+      alert("Gagal mengirim email, silahkan coba lagi ❎");
       console.log(error);
     });
 });
 
-/* ===== SIDE MENU TOGGLE ===== */
 const menuToggle = document.getElementById("menuToggle");
 const overlay = document.getElementById("overlay");
 menuToggle.addEventListener("click", ()=>{ document.body.classList.toggle("menu-open"); });
